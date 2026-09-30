@@ -32,27 +32,32 @@ The project provides RESTful APIs to create, read, update, and delete expense re
 
 ```text
 expense_tracker_with_fastapi/
+expense_tracker_with_fastapi/
 │
+├── .gitignore
+├── README.md
+├── requirements.txt
 ├── main.py
 │
 ├── conn/
+│   ├── __init__.py
 │   └── db.py
-│
-├── schemas/
-│   └── expense_schema.py
-│
-├── service/
-│   ├── add_expense.py
-│   ├── get_data.py
-│   └── update.py
 │
 ├── frontend/
 │   ├── index.html
-│   ├── style.css
-│   └── script.js
+│   ├── script.js
+│   └── style.css
 │
-├── .gitignore
-└── README.md
+├── schemas/
+│   ├── __init__.py
+│   └── expense_schema.py
+│
+└── service/
+    ├── __init__.py
+    ├── add_expense.py
+    ├── get_data.py
+    ├── update.py
+    └── delete.py
 ```
 
 ## 🔗 API Endpoints
