@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Expense Tracker</h1>
+    </header>
+
+
+    <main class="dashboard">
+
+        <!-- LEFT SIDE -->
+        <div class="operations">
+
+            <!-- Add -->
+            <section class="card">
+
+                <h2>Add Expense</h2>
+
+                <input
+                    type="text"
+                    id="addTitle"
+                    placeholder="Title"
+                >
+
+                <input
+                    type="number"
+                    id="addAmount"
+                    placeholder="Amount"
+                >
+
+                <input
+                    type="text"
+                    id="addCategory"
+                    placeholder="Category"
+                >
+
+                <button onclick="addExpense()">
+                    Add Expense
+                </button>
+
+            </section>
+
+
+            <!-- Get -->
+            <section class="card">
+                <h2>Find Expenses</h2>
+
+                <input
+                    type="number"
+                    id="getId"
+                    placeholder="Expense ID"
+                >
+
+                <button onclick="getExpense()">
+                    Get Expense
+                </button>
+
+                <button onclick="getAllExpenses()">
+                    Get All
+                </button>
+            </section>
+
+
+            <!-- Update -->
+            <section class="card">
+
+                <h2>Update Expense</h2>
+
+                <input
+                    type="number"
+                    id="updateId"
+                    placeholder="Expense ID"
+                >
+
+                <input
+                    type="text"
+                    id="updateTitle"
+                    placeholder="New title"
+                >
+
+                <input
+                    type="number"
+                    id="updateAmount"
+                    placeholder="New amount"
+                >
+
+                <input
+                    type="text"
+                    id="updateCategory"
+                    placeholder="New category"
+                >
+
+                <button onclick="updateExpense()">
+                    Update Expense
+                </button>
+
+            </section>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="result-container">
+
+            <section class="result-card">
+
+                <h2>Expense Details</h2>
+
+                <div id="result" class="expense-result">
+                    <p class="no-result">No expense selected.</p>
+                </div>
+
+            </section>
+
+        </div>
+        
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
