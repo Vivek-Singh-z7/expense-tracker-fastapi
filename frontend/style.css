@@ -345,3 +345,9 @@ pre {
     text-align: center;
     padding-top: 70px;
 }
+
+#delete-message {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #b00020;
+}

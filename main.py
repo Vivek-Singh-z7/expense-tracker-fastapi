@@ -1,8 +1,10 @@
 from conn import db
 from fastapi import FastAPI, HTTPException
-from service import add_expense, get_data, update, delete
+from service import add_expense, get_data, update, delete, get_deleted
 from schemas.expense_schema import Expense 
 from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI()
 
 
@@ -31,7 +33,42 @@ def show_all_expense():
     )
     
   return result
+
+
+
+@app.get("/expense_tracker_app/deleted")
+def get_deleted_expense():
+  result = get_deleted.show_deleted_expense()
   
+  if result == []:
+    raise HTTPException(
+      status_code=404,
+      detail="Expense Not Found"
+    )
+  
+  return result
+  
+  
+@app.delete("/expense_tracker_app/deleted/{expense_id}")
+def delete_permanently(expense_id: int):
+
+    result = delete.delete_permanently(expense_id)
+
+    if result == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Deleted expense not found"
+        )
+
+    if result is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to delete expense"
+        )
+
+    return {
+        "message": "Expense permanently deleted"
+    }
   
 @app.get("/expense_tracker_app/{expense_id}")
 def show_expense(expense_id: int):
@@ -83,10 +120,4 @@ def delete_expense(expense_id: int):
     )
     
   return result
-  
-  
-# {
-#   "title": "hair cut",
-#   "amount": 50,
-#   "category": "personal"
-# }
+

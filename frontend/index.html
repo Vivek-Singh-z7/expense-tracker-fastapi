@@ -71,7 +71,6 @@
                 </button>
             </section>
 
-
             <!-- Update -->
             <section class="card">
 
@@ -107,6 +106,17 @@
 
             </section>
 
+            <!-- delete -->
+             <section class="card">
+                <h2>Delete Expense</h2>
+                
+                <input type="number" id="delete-id" placeholder="Enter expense ID">
+                
+                <button onclick="deleteExpenseById()">
+                    Delete
+                </button>
+                <p id="delete-message"></p>
+            </section>
         </div>
 
 
@@ -120,6 +130,10 @@
                 <div id="result" class="expense-result">
                     <p class="no-result">No expense selected.</p>
                 </div>
+
+                <button onclick="getDeletedExpenses()">
+                    Show Deleted Expenses
+                </button>
 
             </section>
 

@@ -85,6 +85,97 @@ async function getAllExpenses() {
     showResult(data);
 }
 
+async function getDeletedExpenses() {
+    const response = await fetch(`${API_URL}/deleted`);
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        showResult(data);
+        return;
+    }
+
+    showDeletedResult(data);
+}
+
+async function deleteExpense(id) {
+    const response = await fetch(
+        `http://127.0.0.1:8000/expense_tracker_app/${id}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    if (!response.ok) {
+        console.log("Delete failed");
+        return;
+    }
+
+    getAllExpenses();
+}
+
+async function deletePermanently(id) {
+
+    try {
+        const response = await fetch(
+            `${API_URL}/deleted/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log(data.detail || "Permanent delete failed");
+            return;
+        }
+
+        // Refresh deleted expenses
+        getDeletedExpenses();
+
+    } catch (error) {
+        console.log("Unable to connect to the server");
+    }
+}
+
+async function deleteExpenseById() {
+    const id = document.getElementById("delete-id").value;
+    const message = document.getElementById("delete-message");
+
+    message.textContent = "";
+
+    if (!id) {
+        message.textContent = "Please enter an expense ID";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `http://127.0.0.1:8000/expense_tracker_app/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if (!response.ok) {
+            const data = await response.json();
+            message.textContent = data.detail || "Expense not found";
+            return;
+        }
+
+        document.getElementById("delete-id").value = "";
+
+        // Refresh the expense cards
+        getAllExpenses();
+
+    } catch (error) {
+        message.textContent = "Unable to connect to the server";
+    }
+}
+
+
+
 function showResult(data) {
     const result = document.getElementById("result");
 
@@ -207,4 +298,70 @@ function showResult(data) {
 
         </div>
     `;
+}
+
+
+function showDeletedResult(data) {
+
+    const result = document.getElementById("result");
+
+    if (data.detail) {
+        result.innerHTML = `
+            <p class="no-result">
+                ${data.detail}
+            </p>
+        `;
+        return;
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+        result.innerHTML = `
+            <p class="no-result">
+                No deleted expenses found.
+            </p>
+        `;
+        return;
+    }
+
+    result.innerHTML = data.map(expense => `
+        <div class="expense-item">
+
+            <div class="expense-id">
+                Expense #${expense.id}
+            </div>
+
+            <div class="expense-title">
+                ${expense.title}
+            </div>
+
+            <div class="expense-amount">
+                ₹${expense.amount}
+            </div>
+
+            <div class="expense-info">
+                <span class="expense-label">Category</span>
+                <span class="category">
+                    ${expense.category}
+                </span>
+            </div>
+
+            <div class="expense-info">
+                <span class="expense-label">Date</span>
+                <span class="expense-value">
+                    ${expense.expense_date || "N/A"}
+                </span>
+            </div>
+
+            <div class="expense-actions">
+
+                <button
+                    class="delete-btn"
+                    onclick="deletePermanently(${expense.id})">
+                    Delete Permanently
+                </button>
+
+            </div>
+
+        </div>
+    `).join("");
 }

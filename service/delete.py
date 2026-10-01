@@ -32,3 +32,21 @@ def remove_expense(expense_id: int):
     print(f"ERROR: {err}")
     return None
   
+def delete_permanently(expense_id: int):
+  try:
+    with get_connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute("DELETE FROM deleted_expense WHERE id = %s",(expense_id,))
+  
+        deleted_rows = cur.rowcount
+    
+      conn.commit()
+
+
+    return deleted_rows
+    
+  except Exception as err:
+    print(f"ERROR: {err}")
+    return None
+    
+  
