@@ -1,26 +1,32 @@
 import psycopg
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 
 def get_connection():
   return psycopg.connect(
-    host="localhost",
-    port=5432,
-    dbname="expense_tracker_app",
-    user="postgres",
-    password="YOUR_PASSWORD",
-  )
+    host=os.getenv("DB_HOST"),
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    port=os.getenv("DB_PORT")
+)
 
 
 def create_db():
 
   conn = psycopg.connect(
-    host="localhost",
-    port=5432,
-    dbname="postgres",
-    user="postgres",
-    password="3103",
-  )
+    host=os.getenv("DB_HOST"),
+    dbname=os.getenv("DB_NAME"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    port=os.getenv("DB_PORT")
+)
+  
+  dbname = os.getenv("DB_NAME")
   
   conn.autocommit = True
   
@@ -28,11 +34,12 @@ def create_db():
       cur.execute("""
           SELECT 1
           FROM pg_database
-          WHERE datname = 'expense_tracker_app'
-      """)
+          WHERE datname = %s
+      """, (dbname,))
+      
       exists = cur.fetchone()
       if not exists:
-          cur.execute("CREATE DATABASE expense_tracker_app")
+          cur.execute("CREATE DATABASE %s", (dbname,))
           print("Database created.")
       else:
           print("Database already exists.")
